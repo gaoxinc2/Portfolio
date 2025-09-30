@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Name — Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Photography portfolio of Your Name" />
+  <style>
+    :root { --max: 1100px; --pad: 18px; --fg:#1a1a1a; --muted:#6b6b6b; --bg:#fff; }
+    *{ box-sizing:border-box }
+    html,body{ margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Arial }
+    a{ color:inherit; text-decoration:none }
+    header, main, footer{ max-width:var(--max); margin:auto; padding: var(--pad) }
+    header{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:28px }
+    .brand{ font-weight:700; letter-spacing:.2px; }
+    .muted{ color:var(--muted) }
+    .hero{ padding: 24px 0 8px; }
+    .hero h1{ margin:0 0 6px; font-size: clamp(28px, 4vw, 40px); }
+    .hero p{ margin:0; }
+    .gallery{ display:grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap:12px; margin:28px 0 }
+    .gallery img{ width:100%; height:auto; display:block; border-radius:12px; cursor:pointer; }
+    .gallery figcaption{ font-size:.9rem; color:var(--muted); margin-top:6px }
+    section{ padding: 8px 0 }
+    hr{ border:0; border-top:1px solid #eee; margin:32px 0 }
+    footer{ color:var(--muted); font-size:.9rem; text-align:center; padding-bottom:36px }
+    /* Lightbox */
+    .lightbox{ position:fixed; inset:0; background:rgba(0,0,0,.92); display:none; place-items:center; padding:20px; }
+    .lightbox.open{ display:grid; }
+    .lightbox img{ max-width:min(95vw,1400px); max-height:85vh; object-fit:contain; }
+    .lb-close{ position:absolute; top:14px; right:18px; font-size:28px; color:#fff; background:none; border:0; cursor:pointer }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">GAOXIN CHEN</div>
+    <div class="muted">Portfolio</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Landscape</h1>
+      <p class="muted">Minimal, fast, single page. Click any image to view large.</p>
+    </section>
+
+    <!-- GALLERY -->
+    <section aria-label="Gallery">
+      <div class="gallery" id="gallery">
+        <!-- Use files that live next to this HTML file, like carp.JPG -->
+        <figure>
+          <img src="carp.JPG" alt="Carp" data-title="Carp" loading="lazy">
+          <figcaption>Carp</figcaption>
+        </figure>
+
+        <!-- Add more photos by duplicating this figure block -->
+        <!--
+        <figure>
+          <img src="anotherPhoto.jpg" alt="Description" data-title="Series Name" loading="lazy">
+          <figcaption>Series Name</figcaption>
+        </figure>
+        -->
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- OPTIONAL ABOUT/CONTACT inside same page -->
+    <section aria-label="About">
+      <h2>About</h2>
+      <p class="muted">Write a short bio here — your focus, location, clients, awards, etc.</p>
+    </section>
+
+    <section aria-label="Contact">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:you@example.com">gaoxinc2@gmail.com</a></p>
+      <p>Instagram: <a href="https://instagram.com/yourhandle" target="_blank" rel="noreferrer">@lexicgx</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Your Name. All rights reserved.</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="Image viewer">
+    <button class="lb-close" id="lb-close" aria-label="Close">×</button>
+    <img id="lb-img" alt="">
+  </div>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // simple lightbox
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lb-img');
+    const btnClose = document.getElementById('lb-close');
+
+    document.querySelectorAll('#gallery img').forEach(img => {
+      img.addEventListener('click', () => {
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || '';
+        lb.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeLB(){
+      lb.classList.remove('open');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+    btnClose.addEventListener('click', closeLB);
+    lb.addEventListener('click', e => { if (e.target === lb) closeLB(); });
+    window.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+  </script>
+</body>
+</html>
